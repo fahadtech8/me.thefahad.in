@@ -857,10 +857,9 @@
     }
   </script>
 
-<!-- DO NOT EDIT OR REMOVE THIS SECTION - -->
-
+<!-- DO NOT EDIT OR REMOVE THIS SECTION - SECURITY LOCK -->
 <style>
-  
+    /* Default lock: Website ko hide rakhega */
     body { display: none !important; }
 </style>
 
@@ -909,22 +908,27 @@
             }
 
             if(err){
-              
+                // Error hai toh error message dikhao
                 document.body.style.setProperty('display', 'block', 'important');
                 document.body.style.overflow = 'hidden';
                 document.getElementById('_x_h').innerHTML = d['title'];
                 const mb = document.getElementById('_x_b');
                 mb.innerHTML = force ? m[_f.c][_f.co] : err;
-             
+                o.style.display = 'flex';
+                // ... redirect logic ...
             } else {
-                
-                document.body.style.setProperty('display', 'block', 'important');
+                // SUCCESS: License sahi hai, Website ON karo 🔓
+                document.body.style.setProperty('display', 'grid', 'important');
+                // Fix: Card height recalculate karein jab body visible ho jaye
+                setTimeout(function(){
+                    if(typeof syncCardHeight === 'function') syncCardHeight();
+                }, 100);
             }
         } catch(e) {}
     }
     _v8_core();
 })();
 </script>
-
+<!-- END SECURITY LOCK -->
 </body>
 </html>

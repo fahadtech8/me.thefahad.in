@@ -1,4 +1,4 @@
-const CACHE_NAME = "fahad-card-v28";
+const CACHE_NAME = "fahad-card-v30";
 const ASSETS = [
   "./",
   "./index.html",
