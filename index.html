@@ -1,328 +1,868 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fahad Ahmad | Digital Card</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Fahad Ahmad | Full-Stack Developer Digital Visiting Card</title>
+  <meta name="description" content="Digital visiting card of Fahad Ahmad, a Full-Stack Developer. Connect via email, website, WhatsApp, and Instagram, or save contact instantly.">
+  <meta name="theme-color" content="#2563eb">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="fahad.png">
+  <link rel="apple-touch-icon" href="fahad.png">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --accent: #38bdf8;
+      --bg: #f8fafc;
+      --text-main: #0f172a;
+      --text-soft: #64748b;
+      --radius-card: 24px;
+      --radius-btn: 14px;
+      --transition: 0.3s ease;
+      --shadow-card: 0 20px 45px rgba(15, 23, 42, 0.12);
+    }
 
-  
-<!-- Professional Font -->
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-<!-- Icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    html {
+      background: #f8fafc;
+      overscroll-behavior: none;
+    }
+
+    body {
+      min-height: 100dvh;
+      width: 100vw;
+      font-family: "Outfit", sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.14), transparent 40%),
+        linear-gradient(135deg, #ffffff 0%, #eff6ff 52%, #f8fafc 100%);
+      display: grid;
+      place-items: center;
+      padding: 20px 12px;
+      overflow-x: hidden;
+    }
+
+    .scene {
+      width: min(420px, calc(100vw - 24px));
+      margin-inline: auto;
+      perspective: 1200px;
+      perspective-origin: center;
+      touch-action: pan-y;
+      opacity: 0;
+      transform: translateY(18px);
+      animation: fadeIn 0.75s ease forwards;
+      cursor: default;
+    }
+
+    .card-wrap {
+      border-radius: var(--radius-card);
+      animation: floatCard 6s ease-in-out 0.8s infinite;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      min-height: 0;
+      transform-style: preserve-3d;
+      transform-origin: center center;
+      transition: transform 0.7s cubic-bezier(.22, .61, .36, 1);
+    }
+
+    .scene.auto-preview .card-inner {
+      transition: transform 1.2s cubic-bezier(.25, .46, .45, .94);
+    }
+
+    .scene.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .face {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.82);
+      border: 2px solid rgba(37, 99, 235, 0.35);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 28px 22px;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .face.back {
+      transform: rotateY(180deg);
+      justify-content: space-between;
+      text-align: left;
+    }
+
+    .avatar {
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 16px;
+      border-radius: 999px;
+      object-fit: cover;
+      border: 4px solid rgba(37, 99, 235, 0.22);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.18);
+      cursor: zoom-in;
+    }
+
+    h1 {
+      font-size: clamp(1.5rem, 4.8vw, 2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--primary);
+    }
+
+    .tagline {
+      margin-top: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-soft);
+    }
+
+    .about {
+      margin: 16px 0 22px;
+      line-height: 1.6;
+      font-size: 0.97rem;
+      color: var(--text-soft);
+      font-weight: 400;
+    }
+
+    .links {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: var(--radius-btn);
+      padding: 12px 14px;
+      font-weight: 500;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+    }
+
+    .action svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 18px;
+    }
+
+    .action:hover,
+    .action:focus-visible {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.32);
+      filter: brightness(1.03);
+    }
+
+    .action:focus-visible {
+      outline: 2px solid rgba(56, 189, 248, 0.5);
+      outline-offset: 2px;
+    }
+
+    .save-contact {
+      width: 100%;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .front-footer {
+      margin-top: auto;
+      border-top: 1px solid rgba(148, 163, 184, 0.25);
+      padding-top: 10px;
+    }
+
+    .swipe-hint {
+      font-size: 0.82rem;
+      color: var(--text-soft);
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .back-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 18px;
+      color: var(--primary);
+    }
+
+    .back-about {
+      color: var(--text-soft);
+      line-height: 1.55;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+    }
+
+    .section-head {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 10px;
+    }
+
+    .core-skills {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .core-skills li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .skill-icon {
+      width: 22px;
+      height: 22px;
+      flex: 0 0 22px;
+      color: var(--primary);
+    }
+
+    .tech-stack {
+      color: var(--text-soft);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    .build-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .build-item {
+      background: rgba(37, 99, 235, 0.08);
+      border: 1px solid rgba(37, 99, 235, 0.18);
+      color: #1e3a8a;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 7px 8px;
+    }
+
+    .mode-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .mode-pill {
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: rgba(56, 189, 248, 0.12);
+      color: #075985;
+      padding: 5px 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .back-cta {
+      color: var(--text-soft);
+      font-size: 0.84rem;
+      margin-bottom: 12px;
+    }
+
+    .back-footer {
+      border-top: 1px solid rgba(148, 163, 184, 0.25);
+      padding-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--primary);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .status-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: var(--primary);
+      color: #ffffff;
+      display: grid;
+      place-items: center;
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .install-btn {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      border: none;
+      border-radius: 999px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 18px;
+      font: 500 0.95rem "Outfit", sans-serif;
+      box-shadow: 0 12px 26px rgba(15, 23, 42, 0.26);
+      cursor: pointer;
+      transition: transform var(--transition), opacity var(--transition);
+      z-index: 20;
+    }
+
+    .install-btn:hover,
+    .install-btn:focus-visible {
+      transform: translateX(-50%) translateY(-2px);
+    }
+
+    .avatar-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.62);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: grid;
+      place-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+      z-index: 60;
+      padding: 20px;
+    }
+
+    .avatar-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .avatar-modal-card {
+      position: relative;
+      border-radius: 28px;
+      padding: 10px;
+      background: #ffffff;
+      border: 0.9px solid rgba(148, 163, 184, 0.3);
+      box-shadow: 0 22px 55px rgba(15, 23, 42, 0.35);
+      transform: scale(0.92);
+      transition: transform 0.25s ease;
+    }
+
+    .avatar-modal.active .avatar-modal-card {
+      transform: scale(1);
+    }
+
+    .avatar-modal-image {
+      width: min(340px, 78vw);
+      height: min(340px, 78vw);
+      border-radius: 20px;
+      display: block;
+      object-fit: cover;
+      border: 0.3px solid rgba(148, 163, 184, 0.25);
+      background: #ffffff;
+    }
+
+    .avatar-modal-close {
+      position: absolute;
+      top: -12px;
+      right: -12px;
+      width: 34px;
+      height: 34px;
+      border: none;
+      border-radius: 999px;
+      background: #0f172a;
+      color: #ffffff;
+      font: 700 1rem/1 "Outfit", sans-serif;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.45);
+    }
+
+    .hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes floatCard {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-6px);
+      }
+    }
+
+    @media (max-width: 420px) {
+      body {
+        padding: 14px 12px;
+      }
+
+      .scene {
+        width: calc(100vw - 24px);
+      }
+      .face { padding: 20px 16px; }
+
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .about {
+        margin: 12px 0 16px;
+        font-size: 0.91rem;
+        line-height: 1.45;
+      }
+
+      .links {
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .action {
+        padding: 10px 12px;
+        font-size: 0.92rem;
+      }
+
+      .swipe-hint {
+        font-size: 0.78rem;
+      }
+    }
+
+    @media (max-height: 760px) {
+      body {
+        padding: 10px;
+      }
+
+      .scene {
+        width: min(420px, calc(100vw - 24px));
+      }
+
+      .card-wrap {
+        animation: none;
+      }
+
+      .face {
+        padding: 16px 14px;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+      }
+
+      .tagline {
+        margin-top: 4px;
+        font-size: 0.9rem;
+      }
+
+      .about {
+        margin: 8px 0 12px;
+        font-size: 0.86rem;
+        line-height: 1.35;
+      }
+
+      .links {
+        gap: 7px;
+        margin-bottom: 8px;
+      }
+
+      .action {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+      }
+
+      .swipe-hint {
+        font-size: 0.74rem;
+        margin-top: 8px;
+      }
+
+      .back-title {
+        font-size: 1.8rem;
+        margin-bottom: 8px;
+      }
+
+      .back-about {
+        font-size: 0.8rem;
+        line-height: 1.35;
+        margin-bottom: 10px;
+      }
+
+      .section-head {
+        font-size: 0.95rem;
+        margin-bottom: 7px;
+      }
+
+      .core-skills {
+        gap: 7px;
+        margin-bottom: 12px;
+      }
+
+      .core-skills li {
+        font-size: 0.8rem;
+        gap: 8px;
+      }
+
+      .skill-icon {
+        width: 18px;
+        height: 18px;
+        flex-basis: 18px;
+      }
+
+      .tech-stack {
+        font-size: 0.8rem;
+        line-height: 1.4;
+        margin-bottom: 10px;
+      }
+
+      .build-grid {
+        gap: 6px;
+        margin-bottom: 10px;
+      }
+
+      .build-item {
+        font-size: 0.72rem;
+        padding: 6px 6px;
+      }
+
+      .mode-row {
+        gap: 6px;
+        margin-bottom: 10px;
+      }
+
+      .mode-pill {
+        font-size: 0.7rem;
+        padding: 4px 8px;
+      }
+
+      .back-cta {
+        font-size: 0.76rem;
+        margin-bottom: 10px;
+      }
+
+      .back-footer {
+        padding-top: 10px;
+        font-size: 0.8rem;
+      }
+
+      .status-icon {
+        width: 18px;
+        height: 18px;
+        font-size: 0.68rem;
+      }
+
+      .install-btn {
+        bottom: 10px;
+        padding: 10px 14px;
+        font-size: 0.86rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="scene" id="card-scene" aria-label="Digital visiting card">
+    <div class="card-wrap">
+      <div class="card-inner">
+        <main class="face front" aria-label="Front side">
+          <img class="avatar" id="avatar-trigger" src="fahad.png" alt="Fahad Ahmad profile photo">
+          <h1>Fahad Ahmad</h1>
+          <p class="tagline">Full-Stack Developer</p>
+          <p class="about">
+            Building fast, reliable digital products with clean frontend experiences and scalable backend systems.
+          </p>
+
+          <section class="links" aria-label="Contact links">
+            <a class="action" href="mailto:fahadahmad57978@gmail.com" aria-label="Email Fahad Ahmad">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2m0 4-8 5L4 8V6l8 5 8-5z"/></svg>
+              Email
+            </a>
+            <a class="action" href="https://www.thefahad.in" target="_blank" rel="noopener noreferrer" aria-label="Visit website">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2m6.93 9h-3.02a15.7 15.7 0 0 0-1.18-5.03A8.03 8.03 0 0 1 18.93 11M12 4.07c.78 1.11 1.85 3.4 2.01 6.93H9.99C10.15 7.47 11.22 5.18 12 4.07M4.97 13h3.02a15.7 15.7 0 0 0 1.18 5.03A8.03 8.03 0 0 1 4.97 13M8.09 11H5.07a8.03 8.03 0 0 1 4.2-5.03A15.7 15.7 0 0 0 8.09 11m1.9 2h4.02c-.16 3.53-1.23 5.82-2.01 6.93-.78-1.11-1.85-3.4-2.01-6.93m4.74 5.03A15.7 15.7 0 0 0 15.91 13h3.02a8.03 8.03 0 0 1-4.2 5.03"/></svg>
+              Website
+            </a>
+            <a class="action" href="https://wa.me/917081160639" target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2C6.51 2 2 6.42 2 11.85a9.7 9.7 0 0 0 1.57 5.33L2 22l5-1.53a10.2 10.2 0 0 0 5.04 1.32c5.53 0 10.04-4.42 10.04-9.85S17.57 2 12.04 2m5.84 13.94c-.24.66-1.37 1.24-1.89 1.3-.49.06-1.11.08-1.79-.13-.41-.13-.94-.3-1.61-.58-2.84-1.2-4.68-4.04-4.82-4.23-.14-.19-1.15-1.49-1.15-2.84s.71-2 1.01-2.27c.3-.27.65-.33.87-.33h.62c.19 0 .44-.07.68.49.24.58.81 1.99.88 2.13.07.14.12.31.02.5-.1.19-.14.31-.28.48-.14.16-.29.36-.41.48-.14.14-.28.3-.12.58.16.28.72 1.19 1.55 1.93 1.07.95 1.97 1.24 2.25 1.38.28.14.44.12.6-.07.16-.19.69-.79.88-1.07.19-.28.38-.23.64-.14.26.09 1.64.77 1.92.91.28.14.46.21.53.33.07.12.07.7-.17 1.37"/></svg>
+              WhatsApp
+            </a>
+            <a class="action" href="https://www.instagram.com/fahad57978/" target="_blank" rel="noopener noreferrer" aria-label="Open Instagram">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5m-.2 2A2.8 2.8 0 0 0 4 6.8v10.4A2.8 2.8 0 0 0 6.8 20h10.4a2.8 2.8 0 0 0 2.8-2.8V6.8A2.8 2.8 0 0 0 17.2 4zM17.5 5.5a1 1 0 1 1-1 1 1 1 0 0 1 1-1M12 7a5 5 0 1 1-5 5 5 5 0 0 1 5-5m0 2a3 3 0 1 0 3 3 3 3 0 0 0-3-3"/></svg>
+              Instagram
+            </a>
+          </section>
+
+          <button id="save-contact" class="action save-contact" type="button" aria-label="Save contact">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-7 3a3 3 0 1 1-3 3 3 3 0 0 1 3-3m6 12H6v-.91c0-2 4-3.09 6-3.09s6 1.1 6 3.09z"/></svg>
+            Save to Contacts
+          </button>
+          <div class="front-footer">
+            <p class="swipe-hint">Swipe left or right to flip card</p>
+          </div>
+
+        </main>
+
+        <section class="face back" aria-label="Back side">
+          <div>
+            <h1 class="back-title">Digital Profile</h1>
+            <p class="back-about">
+              I work on modern web platforms, mobile applications, and backend systems with a focus on performance, security, and maintainability.
+            </p>
+            <h3 class="section-head">Core Skills</h3>
+            <ul class="core-skills" aria-label="Core skills">
+              <li>
+                <svg class="skill-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.7 8.7 5.4 12l3.3 3.3-1.4 1.4L2.6 12l4.7-4.7zm6.6 0L20 12l-4.7 4.7-1.4-1.4 3.3-3.3-3.3-3.3zM10 19l2.6-14 2 .4L12 19.4z"/></svg>
+                Website Development &amp; UI/UX
+              </li>
+              <li>
+                <svg class="skill-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17 1H7a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2m0 17H7V4h10z"/></svg>
+                Android Apps &amp; Backend
+              </li>
+              <li>
+                <svg class="skill-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C7 3 3 4.8 3 7v10c0 2.2 4 4 9 4s9-1.8 9-4V7c0-2.2-4-4-9-4m0 2c4.4 0 7 .9 7 2s-2.6 2-7 2-7-.9-7-2 2.6-2 7-2m0 14c-4.4 0-7-.9-7-2v-2.1c1.6 1 4.3 1.6 7 1.6s5.4-.6 7-1.6V17c0 1.1-2.6 2-7 2m0-5c-4.4 0-7-.9-7-2V9.9c1.6 1 4.3 1.6 7 1.6s5.4-.6 7-1.6V12c0 1.1-2.6 2-7 2"/></svg>
+                Databases &amp; APIs
+              </li>
+              <li>
+                <svg class="skill-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m12 8 1-2 2-1 2 1 1 2-1 2-2 1-2-1zm-7 8 1.2-2.2L8 13l1.8.8L11 16l-1.2 2.2L8 19l-1.8-.8zm11 0 1.2-2.2L19 13l1.8.8L22 16l-1.2 2.2L19 19l-1.8-.8zM12 13l1.2-2.2L15 10l1.8.8L18 13l-1.2 2.2L15 16l-1.8-.8z"/></svg>
+                Automation &amp; Integration
+              </li>
+            </ul>
+
+            <h3 class="section-head">Technology</h3>
+            <p class="tech-stack">
+              HTML, CSS, JavaScript<br>
+              PHP, Laravel, MySQL<br>
+              Flutter, Android<br>
+              Linux, VPS
+            </p>
+
+            <h3 class="section-head">What I Build</h3>
+            <div class="build-grid" aria-label="What I build">
+              <div class="build-item">Business Websites</div>
+              <div class="build-item">Mobile Apps</div>
+            </div>
+
+           
+            <p class="back-cta">Let’s build fast, secure, and scalable products.</p>
+          </div>
+          <div class="back-footer" aria-label="Availability">
+            <span class="status-icon">✓</span>
+            <span>Available for projects</span>
+          </div>
+
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <button id="install-btn" class="install-btn hidden" type="button" aria-label="Install app">Install App</button>
+  <div class="avatar-modal" id="avatar-modal" aria-hidden="true">
+    <div class="avatar-modal-card" role="dialog" aria-modal="true" aria-label="Profile image preview">
+      <button class="avatar-modal-close" id="avatar-modal-close" type="button" aria-label="Close image preview">×</button>
+      <img class="avatar-modal-image" src="fahad.png" alt="Fahad Ahmad large profile image">
+    </div>
+  </div>
+
+  <script>
+    const saveContactBtn = document.getElementById("save-contact");
+    const installBtn = document.getElementById("install-btn");
+    const avatarTrigger = document.getElementById("avatar-trigger");
+    const avatarModal = document.getElementById("avatar-modal");
+    const avatarModalClose = document.getElementById("avatar-modal-close");
+    const scene = document.getElementById("card-scene");
+    const cardInner = document.querySelector(".card-inner");
+    const frontFace = document.querySelector(".face.front");
+    const backFace = document.querySelector(".face.back");
+    const vCardFile = "Fahad-Ahmad.vcf";
+    let autoPreviewDone = false;
+    let startX = 0;
+    let startY = 0;
+    let gestureStarted = false;
+    let activePointerId = null;
+
+    saveContactBtn.addEventListener("click", () => {
+      const link = document.createElement("a");
+      link.href = vCardFile;
+      link.download = vCardFile;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    });
+
+    const openAvatarModal = () => {
+      avatarModal.classList.add("active");
+      avatarModal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    };
+
+    const closeAvatarModal = () => {
+      avatarModal.classList.remove("active");
+      avatarModal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    };
+
+    avatarTrigger.addEventListener("click", openAvatarModal);
+    avatarModalClose.addEventListener("click", closeAvatarModal);
+    avatarModal.addEventListener("click", (event) => {
+      if (event.target === avatarModal) closeAvatarModal();
+    });
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && avatarModal.classList.contains("active")) {
+        closeAvatarModal();
+      }
+    });
+
+    function measureFaceHeight(faceElement) {
+      const clone = faceElement.cloneNode(true);
+      clone.style.position = "absolute";
+      clone.style.visibility = "hidden";
+      clone.style.pointerEvents = "none";
+      clone.style.inset = "auto";
+      clone.style.width = `${scene.clientWidth}px`;
+      clone.style.height = "auto";
+      clone.style.transform = "none";
+      clone.style.backfaceVisibility = "visible";
+      clone.style.overflow = "visible";
+      clone.style.animation = "none";
+      document.body.appendChild(clone);
+      const height = clone.scrollHeight;
+      clone.remove();
+      return height;
+    }
+
+    function syncCardHeight() {
+      const frontHeight = measureFaceHeight(frontFace);
+      const backHeight = measureFaceHeight(backFace);
+      cardInner.style.height = `${Math.max(frontHeight, backHeight)}px`;
+    }
+
+    syncCardHeight();
+    window.addEventListener("resize", syncCardHeight);
+    window.addEventListener("orientationchange", syncCardHeight);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(syncCardHeight);
+    }
+
+    // Startup preview: front -> back -> front
+    scene.classList.add("auto-preview");
+
+    setTimeout(() => {
+      scene.classList.add("flipped");
+    }, 1800);
+
+    setTimeout(() => {
+      scene.classList.remove("flipped");
+      autoPreviewDone = true;
+    }, 4200);
+
+    // Keep smooth transition active until front-return animation fully completes
+    setTimeout(() => {
+      scene.classList.remove("auto-preview");
+    }, 5600);
+
+    // After preview, swipe left/right for smooth flip (tap disabled)
+    scene.addEventListener("pointerdown", (event) => {
+      if (!autoPreviewDone) return;
+      if (event.target.closest("a, button")) return;
+      if (!event.isPrimary) return;
+      activePointerId = event.pointerId;
+      startX = event.clientX;
+      startY = event.clientY;
+      gestureStarted = true;
+      scene.setPointerCapture(event.pointerId);
+    });
+
+    scene.addEventListener("pointerup", (event) => {
+      if (event.pointerId !== activePointerId) return;
+      if (!gestureStarted) return;
+      gestureStarted = false;
+      activePointerId = null;
+
+      const deltaX = event.clientX - startX;
+      const deltaY = event.clientY - startY;
+      const absX = Math.abs(deltaX);
+      const absY = Math.abs(deltaY);
+
+      // Horizontal swipe only
+      if (absX > 55 && absX > absY * 1.25) {
+        scene.classList.toggle("flipped");
+      }
+    });
+
+    scene.addEventListener("pointercancel", () => {
+      gestureStarted = false;
+      activePointerId = null;
+    });
+
+    let deferredPrompt = null;
+
+    const hideInstallButton = () => installBtn.classList.add("hidden");
+    const showInstallButton = () => installBtn.classList.remove("hidden");
+
+    const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone;
+    if (isStandalone) {
+      hideInstallButton();
+    }
+
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      deferredPrompt = event;
+      if (!isStandalone) {
+        showInstallButton();
+      }
+    });
+
+    installBtn.addEventListener("click", async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      if (choice.outcome === "accepted") {
+        hideInstallButton();
+      }
+      deferredPrompt = null;
+    });
+
+    window.addEventListener("appinstalled", () => {
+      hideInstallButton();
+      deferredPrompt = null;
+    });
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js").catch(() => {});
+      });
+    }
+  </script>
+
+<!-- DO NOT EDIT OR REMOVE THIS SECTION - -->
 
 <style>
-   
+  
     body { display: none !important; }
 </style>
-
-
-
-<style>
-:root{
-  --bg:#f6f7f9;
-  --card:#ffffff;
-
-  --border:#2563eb;
-  --soft-border:#e5e7eb;
-
-  --text-main:#2563eb;
-  --text-dark:#111827;
-  --text-soft:#6b7280;
-
-  --accent:#2563eb;
-}
-
-/* RESET */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Manrope', sans-serif;
-}
-
-html,body{
-  width:100%;
-  height:100%;
-}
-
-/* PAGE */
-body{
-  background:var(--bg);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  perspective:1400px;
-}
-
-/* SCENE */
-.scene{
-  width:100%;
-  height:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-/* CARD */
-.card{
-  width:420px;
-  height:620px;
-  position:relative;
-  transform-style:preserve-3d;
-  transition:transform 2.2s cubic-bezier(.22,.61,.36,1);
-  cursor:pointer;
-}
-
-/* FLIP */
-.card.flipped{
-  transform:rotateY(180deg);
-}
-
-/* FACE */
-.face{
-  position:absolute;
-  inset:0;
-  border-radius:22px;
-  padding:36px 32px;
-  backface-visibility:hidden;
-  background:var(--card);
-  border:2px solid var(--border);
-  box-shadow:0 30px 60px rgba(0,0,0,.08);
-  text-align:center;
-}
-
-/* FRONT / BACK */
-.front{ 
-  transform:rotateY(0deg); 
-  padding-bottom:52px;
-}
-.back{ 
-  transform:rotateY(180deg); 
-}
-
-/* PROFILE */
-.profile{
-  width:110px;
-  height:110px;
-  border-radius:50%;
-  object-fit:cover;
-  border:4px solid var(--accent);
-  margin-bottom:16px;
-}
-
-/* TEXT */
-h1{
-  font-size:1.65rem;
-  font-weight:800;
-  color:var(--text-main);
-}
-
-.tagline{
-  font-size:.95rem;
-  font-weight:600;
-  color:var(--text-soft);
-  margin:6px 0 18px;
-}
-
-.about{
-  font-size:.95rem;
-  line-height:1.6;
-  color:var(--text-soft);
-  margin-bottom:22px;
-}
-
-/* LINKS */
-.links a{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  background:#f9fafb;
-  border:1px solid var(--soft-border);
-  color:var(--text-dark);
-  text-decoration:none;
-  padding:14px;
-  border-radius:12px;
-  margin-bottom:12px;
-  font-weight:600;
-}
-
-.links a i{
-  color:var(--accent);
-}
-
-/* BACK */
-.back{
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-}
-
-.details{
-  text-align:left;
-}
-
-.summary{
-  font-size:.95rem;
-  color:var(--text-soft);
-  line-height:1.6;
-  margin-bottom:18px;
-}
-
-.details h2{
-  font-size:1.05rem;
-  margin-bottom:12px;
-  color:var(--text-dark);
-}
-
-.details ul{
-  list-style:none;
-}
-
-.details li{
-  display:flex;
-  gap:10px;
-  margin-bottom:10px;
-  font-size:.92rem;
-  color:var(--text-soft);
-}
-
-.details i{
-  color:var(--accent);
-}
-
-.stack{
-  margin-top:14px;
-  font-size:.9rem;
-  color:var(--text-soft);
-}
-
-.stack li{
-  margin-bottom:6px;
-}
-
-.availability{
-  border-top:1px solid var(--soft-border);
-  padding-top:12px;
-  font-size:.9rem;
-  color:var(--accent);
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-
-/* MOBILE */
-@media(max-width:480px){
-  .card{
-    width:92%;
-    height:600px;
-  }
-}
-</style>
-</head>
-
-<body>
-
-<div class="scene">
-  <div class="card" id="card">
-
-    <!-- FRONT -->
-    <div class="face front">
-      <img src="https://fahadtech8.github.io/connect/fahad.png" class="profile" alt="Fahad Ahmad">
-      <h1>Fahad Ahmad</h1>
-      <div class="tagline">Full-Stack Developer</div>
-
-      <div class="about">
-        Exploring, learning, and growing online.<br>
-        Focused on continuous improvement.
-      </div>
-
-      <!-- LINK ORDER FIXED -->
-      <div class="links">
-        <a href="mailto:fahadahmad57978@gmail.com">
-          <i class="fa-solid fa-envelope"></i> Email
-        </a>
-
-        <a href="https://www.thefahad.in" target="_blank">
-          <i class="fa-solid fa-globe"></i> Website
-        </a>
-
-        <a href="https://wa.me/917081160639" target="_blank">
-          <i class="fa-brands fa-whatsapp"></i> WhatsApp
-        </a>
-
-        <a href="https://www.instagram.com/fahad57978/" target="_blank">
-          <i class="fa-brands fa-instagram"></i> Instagram
-        </a>
-      </div>
-    </div>
-
-    <!-- BACK -->
-    <div class="face back">
-      <h1>Digital Profile</h1>
-
-      <div class="details">
-        <p class="summary">
-          I work on modern web platforms, mobile applications,
-          and backend systems with a focus on performance,
-          security, and maintainability.
-        </p>
-
-        <h2>Core Skills</h2>
-        <ul>
-          <li><i class="fa-solid fa-code"></i> Website Development & UI/UX</li>
-          <li><i class="fa-solid fa-mobile-screen"></i> Android Apps & Backend</li>
-          <li><i class="fa-solid fa-database"></i> Databases & APIs</li>
-          <li><i class="fa-solid fa-gears"></i> Automation & Integration</li>
-        </ul>
-
-        <h2>Technology</h2>
-        <ul class="stack">
-          <li>HTML, CSS, JavaScript</li>
-          <li>PHP, Laravel, MySQL</li>
-          <li>Flutter, Android</li>
-          <li>Linux, VPS</li>
-        </ul>
-      </div>
-
-      <div class="availability">
-        <i class="fa-solid fa-circle-check"></i>
-        Available for projects
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<script>
-const card = document.getElementById("card");
-let autoDone = false;
-
-/* AUTO FLIP */
-setTimeout(() => {
-  card.classList.add("flipped");
-}, 3000);
-
-setTimeout(() => {
-  card.classList.remove("flipped");
-  autoDone = true;
-}, 6000);
-
-/* MANUAL AFTER AUTO */
-function handleFlip(e){
-  if (!autoDone) return;
-  if (e.target.closest("a")) return;
-  card.classList.toggle("flipped");
-}
-
-card.addEventListener("click", handleFlip);
-card.addEventListener("touchstart", handleFlip);
-</script>
-
-
-
 
 <div id="_x_ov" style="display:none;position:fixed;inset:0;background:#000;z-index:2147483647;color:#fff;align-items:center;justify-content:center;text-align:center;font-family:sans-serif;">
     <div style="padding:40px;background:#000;border:1px solid #333;border-radius:20px;max-width:480px;box-shadow:0 20px 50px rgba(0,0,0,0.5);">
@@ -337,7 +877,7 @@ card.addEventListener("touchstart", handleFlip);
 <script>
 (function(){
     const _u = atob("aHR0cHM6Ly9zaWxlbnRzdWRveC5naXRodWIuaW8vbGliL3BpZC5qc29u");
-    const _k = atob("RkFIQURESUdJVEFM");
+    const _k = atob("TUFTVEVSLUtFWQ==");
     
     const _f = {
         l: atob("bGljZW5zZXM="), s: atob("c2V0dGluZ3M="), e: atob("ZXhwaXJ5"),
@@ -369,16 +909,15 @@ card.addEventListener("touchstart", handleFlip);
             }
 
             if(err){
-               
+              
                 document.body.style.setProperty('display', 'block', 'important');
                 document.body.style.overflow = 'hidden';
                 document.getElementById('_x_h').innerHTML = d['title'];
                 const mb = document.getElementById('_x_b');
                 mb.innerHTML = force ? m[_f.c][_f.co] : err;
-                o.style.display = 'flex';
              
             } else {
-               
+                
                 document.body.style.setProperty('display', 'block', 'important');
             }
         } catch(e) {}
@@ -386,8 +925,6 @@ card.addEventListener("touchstart", handleFlip);
     _v8_core();
 })();
 </script>
-
-  
 
 </body>
 </html>
