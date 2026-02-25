@@ -1,0 +1,29 @@
+{
+  "name": "Fahad Ahmad Digital Card",
+  "short_name": "Fahad Card",
+  "description": "Digital visiting card for Fahad Ahmad, Full-Stack Developer.",
+  "id": "./index.html",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "prefer_related_applications": false,
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "fahad.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "fahad.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
